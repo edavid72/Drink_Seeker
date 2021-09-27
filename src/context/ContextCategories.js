@@ -6,7 +6,7 @@ export const ContextCategories = createContext();
 
 //todo::: Provider: here will be the functions and states
 const ProviderCategories = ({ children }) => {
-  //*States
+  //*State Categories
   const [categories, setCategories] = useState([]);
 
   //*Call API
@@ -14,9 +14,9 @@ const ProviderCategories = ({ children }) => {
     const categoriesAPI = async () => {
       const url = `https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list`;
 
-      const categories = await axios.get(url);
+      const result = await axios.get(url);
 
-      setCategories(categories.data.drinks);
+        setCategories(result.data.drinks);
     };
     categoriesAPI();
   }, []);

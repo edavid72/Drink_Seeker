@@ -1,13 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ContextCategories } from '../context/ContextCategories';
+import { ContextRecipes } from '../context/ContextRecipes';
 
 const Form = () => {
-  const { categories } = useContext(ContextCategories);
+  ///?useState
+  const [terms, setTerms] = useState({
+    ingredient: '',
+    category: '',
+  });
 
-  console.log(categories);
+  //?useContext
+  const { categories } = useContext(ContextCategories);
+  const { setSearchTerms, setActiveQuery } = useContext(ContextRecipes);
+
+  //Function to read the search terms of the inputs
+  const handleChangeTerms = (e) => {
+    setTerms({
+      ...terms,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmitTerms = (e) => {
+    e.preventDefault();
+
+    setSearchTerms(terms);
+    setActiveQuery(true);
+  };
 
   return (
-    <form className="p-2">
+    <form className="p-2" onSubmit={handleSubmitTerms}>
       <h2 className="text-xl text-center capitalize p-2 mb-2 text-darkGrey tablet:text-4xl">
         Search drinks by ingredient or category
       </h2>
@@ -18,11 +40,13 @@ const Form = () => {
           name="ingredient"
           placeholder="Ingredient"
           className="text-xl text-center p-1 mb-1 bg-grey tablet:text-4xl laptop:w-5/12 laptop:mr-2 laptop:text-3xl"
+          onChange={handleChangeTerms}
         />
 
         <select
           name="category"
           className="text-xl text-center p-1 mb-1 bg-grey tablet:text-3xl laptop:w-5/12 laptop:mr-2 laptop:text-3xl"
+          onChange={handleChangeTerms}
         >
           <option value="">--Select Category--</option>
           {categories.map((category) => {
